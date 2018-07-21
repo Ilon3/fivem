@@ -296,11 +296,13 @@ static void* netObject__GetOwnerNetPlayer(rage::netObject* object)
 	return g_playerMgr->localPlayer;
 }
 
+// getEntityAddressInternal
 static hook::cdecl_stub<void*(int handle)> getScriptEntity([]()
 {
 	return hook::pattern("44 8B C1 49 8B 41 08 41 C1 F8 08 41 38 0C 00").count(1).get(0).get<void>(-12);
 });
 
+// addEntityToPoolFunc
 static hook::cdecl_stub<uint32_t(void*)> getScriptGuidForEntity([]()
 {
 	return hook::get_pattern("48 F7 F9 49 8B 48 08 48 63 D0 C1 E0 08 0F B6 1C 11 03 D8", -0x68);
@@ -609,6 +611,14 @@ namespace rage
 		virtual void m_78() = 0;
 
 		virtual bool Equals(const netGameEvent* event) = 0;
+
+		virtual void m_88() = 0;
+
+		virtual bool m_90() = 0;
+
+		virtual bool IsAwaitingReply() = 0;
+
+		virtual void m_a0() = 0;
 
 	public:
 		uint16_t eventId;
